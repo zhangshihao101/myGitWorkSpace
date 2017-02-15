@@ -1,0 +1,10 @@
+确保以下文件存在
+	* libs/lqk_printer.jar
+	* assets/printer.json
+	* libs/armeabi-v7a/libserial_port.so
+	* libs/armeabi-v7a/liblqk_encrypt.so
+
+实例应用的使用:
+	点击Search将会搜索所有可用打印机
+	点击搜索结果将会尝试连接打印机, 如果已经连接将会打印.
+	点击Print按钮将会尝试打印所有搜索到的打印机.

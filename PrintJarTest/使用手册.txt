@@ -1,0 +1,40 @@
+
+1. 获取打印机实例
+	1.1 搜索可用的打印机需要使用PrinterDiscoverySession
+		要获取一个PrinterDiscoverySession, 首先使用PrintManager.getInstance()
+		来得到一个PrintManager实例printManager, 然后调用printManager.openUsbPrinterDiscoverySession()
+		来得到一个PrinterDiscoverySession实例.
+
+		例子: SamplePrintActivity.prepareSearch()
+
+	1.2 获取搜索并获取打印机实例
+		调用session.setObserver()对这个session实例注册一个
+		PrinterDiscoveryObserver, 用于获取打印机搜素的结果.
+		然后调用, session.start(), 搜索到的打印机将会通过onPrinterAdded()
+		回调传给调用者.
+		(注意USB打印机需要使用位于/data/data/<packageName>/下的一个printer.json
+		来获取USB打印机的一些元信息, 需要手动从assets复制到对应位置, 参考SamplePrintActivity.copyUsbDevicePropertyFile())
+
+		例子: SamplePrintActivity.prepareSearch(), SamplePrintActivity.generalObserver
+
+2. 准备打印内容
+	new一个PrintContent.Builder()实例.
+	可以附加内容进builder, 比如字符串, bmp.
+	每一次appendString(), 字符串会自动换行.
+	使用appendPulseSignal()发送钱箱脉冲.
+	
+	例子: SamplePrintActivity.getTestContent()
+
+3. 连接打印机
+	USB打印机需要获取权限才能够打印.
+	首先对printManager.setPrintConnectionResultObserver()
+	用于得到连接结果的回调.
+	然后调用printManager.connect(printer)尝试连接打印机. 
+
+
+4. 执行打印
+	对于每一次打印, 需要创建一个PrintJobInfo实例
+	将打印机实例和打印内容传给PrintJobInfo构造器,
+	然后调用printManager.print(job).
+
+	例子: SamplePrintActivity.togglePrintAll()

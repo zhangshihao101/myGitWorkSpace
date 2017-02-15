@@ -1,0 +1,32 @@
+Guideline of lqk_print.jar
+
+1. Get Printer instance
+	Call PrintManager.openUsbPrinterDiscoverySession() 
+	to get an instance of UsbPrinterDiscoverySession.
+	Register an PrinterDiscoveryObserver to session by 
+	calling setObserver().
+	Invoke session.start() and UsbPrinterInfo instances 
+	will be passed by callback PrinterDiscoveryObserver.
+	onPrinterAdded(PrinterInfo printer);
+
+	Example: SamplePrintActivity.startPrintSearch();
+
+2. Prepare content to be printed
+	Create an instance of PrintContent.Builder().
+	Call builder.append(String str) to append text.
+	Use builder.append(String str, int size, int align) 
+	to control the size and alignment of text.
+	size should be one of PrintContent.FONT_*.
+	align should be one of PrintContent.ALIGN_*.
+	call builder.build() to get PrintContent instance;
+
+	Example: SamplePrintActivity.getTestContent2();
+
+3. Print
+	Construct PrintJobInfo(PrinterInfo printer, PrintContent content).
+	if you want to know when job is succeed or failed, attach an instance
+	of StatusObserver to PrintJobInfo by calling job.setStatusObserver().
+	now invoke PrintManager.print(PrintJobInfo job), and the content should
+	be printed.
+
+	Example: SamplePrintActivity.print();
